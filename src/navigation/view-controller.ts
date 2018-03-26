@@ -40,6 +40,7 @@ export class ViewController {
   private _dismissData: any;
   private _dismissRole: string;
   private _detached: boolean;
+  private _handleOrientationChange:any;
 
   _cmp: ComponentRef<any>;
   _nav: NavController;
@@ -113,7 +114,8 @@ export class ViewController {
 
     this._cssClass = rootCssClass;
     this._ts = Date.now();
-    window.addEventListener('orientationchange', this.handleOrientationChange.bind(this));
+    this._handleOrientationChange = this.handleOrientationChange.bind(this);
+    window.addEventListener('orientationchange', this._handleOrientationChange);
   }
 
   handleOrientationChange() {
@@ -542,7 +544,7 @@ export class ViewController {
         renderer.setElementAttribute(cmpEle, 'style', null);
       }
 
-      window.removeEventListener('orientationchange', this.handleOrientationChange.bind(this));
+      window.removeEventListener('orientationchange', this._handleOrientationChange);
       // completely destroy this component. boom.
       this._cmp.destroy();
     }
